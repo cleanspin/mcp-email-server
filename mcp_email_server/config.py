@@ -313,7 +313,7 @@ class Settings(BaseSettings):
         return (TomlConfigSettingsSource(settings_cls),)
 
     def _to_toml(self) -> str:
-        data = self.model_dump()
+        data = self.model_dump(exclude_none=True)
         return tomli_w.dumps(data)
 
     def store(self) -> None:
