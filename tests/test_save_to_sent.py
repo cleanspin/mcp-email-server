@@ -2,7 +2,7 @@
 
 import asyncio
 from email.mime.text import MIMEText
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -96,12 +96,8 @@ class TestEmailSettingsSaveToSent:
             account_name="test",
             full_name="Test",
             email_address="test@example.com",
-            incoming=EmailServer(
-                user_name="test", password="pass", host="imap.test.com", port=993
-            ),
-            outgoing=EmailServer(
-                user_name="test", password="pass", host="smtp.test.com", port=465
-            ),
+            incoming=EmailServer(user_name="test", password="pass", host="imap.test.com", port=993),
+            outgoing=EmailServer(user_name="test", password="pass", host="smtp.test.com", port=465),
         )
         assert settings.save_to_sent is True
 
@@ -111,12 +107,8 @@ class TestEmailSettingsSaveToSent:
             account_name="test",
             full_name="Test",
             email_address="test@example.com",
-            incoming=EmailServer(
-                user_name="test", password="pass", host="imap.test.com", port=993
-            ),
-            outgoing=EmailServer(
-                user_name="test", password="pass", host="smtp.test.com", port=465
-            ),
+            incoming=EmailServer(user_name="test", password="pass", host="imap.test.com", port=993),
+            outgoing=EmailServer(user_name="test", password="pass", host="smtp.test.com", port=465),
         )
         assert settings.sent_folder_name is None
 
@@ -126,12 +118,8 @@ class TestEmailSettingsSaveToSent:
             account_name="test",
             full_name="Test",
             email_address="test@example.com",
-            incoming=EmailServer(
-                user_name="test", password="pass", host="imap.test.com", port=993
-            ),
-            outgoing=EmailServer(
-                user_name="test", password="pass", host="smtp.test.com", port=465
-            ),
+            incoming=EmailServer(user_name="test", password="pass", host="imap.test.com", port=993),
+            outgoing=EmailServer(user_name="test", password="pass", host="smtp.test.com", port=465),
             save_to_sent=False,
         )
         assert settings.save_to_sent is False
@@ -142,12 +130,8 @@ class TestEmailSettingsSaveToSent:
             account_name="test",
             full_name="Test",
             email_address="test@example.com",
-            incoming=EmailServer(
-                user_name="test", password="pass", host="imap.test.com", port=993
-            ),
-            outgoing=EmailServer(
-                user_name="test", password="pass", host="smtp.test.com", port=465
-            ),
+            incoming=EmailServer(user_name="test", password="pass", host="imap.test.com", port=993),
+            outgoing=EmailServer(user_name="test", password="pass", host="smtp.test.com", port=465),
             sent_folder_name="[Gmail]/Sent Mail",
         )
         assert settings.sent_folder_name == "[Gmail]/Sent Mail"
@@ -315,9 +299,7 @@ class TestEmailClientAppendToSent:
         msg["Subject"] = "Test"
 
         # First folder fails, second succeeds
-        mock_imap_for_append.select = AsyncMock(
-            side_effect=[("NO", []), ("OK", [])]
-        )
+        mock_imap_for_append.select = AsyncMock(side_effect=[("NO", []), ("OK", [])])
 
         with patch("mcp_email_server.emails.classic.aioimaplib") as mock_aioimaplib:
             mock_aioimaplib.IMAP4_SSL.return_value = mock_imap_for_append
